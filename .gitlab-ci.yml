@@ -22,14 +22,3 @@ deploy-develop:
     - heroku container:release web --app my-awesome-app-dev
   only:
     - develop
-
-deploy-master:
-  stage: deploy
-  script:
-    - docker run -t -v $PWD:/app --workdir /app microsoft/dotnet:2.1-sdk bash -c "dotnet restore && dotnet publish -c Release -o ./bin/Release/PublishOutput"
-    - docker build -t $CI_REGISTRY/my-awesome-app/web .
-    - docker push $CI_REGISTRY/my-awesome-app/web
-    # above two commands can be replaced with: "heroku container:push web --app my-awesome-app"
-    - heroku container:release web --app my-awesome-app
-  only:
-    - master
